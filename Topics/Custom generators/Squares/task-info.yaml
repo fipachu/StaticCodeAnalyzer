@@ -1,0 +1,22 @@
+type: code
+files:
+  - name: main.py
+    visible: true
+    highlight_level: NONE
+    text: |-
+      n = int(input())
+      
+      
+      def squares():
+          yield ...
+      
+      
+      # Don't forget to print out the first n numbers one by one here
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/8274#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Tue, 26 Mar 2024 17:55:12 UTC"
+record: -1
+submission_language: python3

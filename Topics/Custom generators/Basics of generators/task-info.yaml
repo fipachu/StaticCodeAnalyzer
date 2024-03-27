@@ -1,0 +1,20 @@
+type: choice
+is_multiple_choice: true
+options:
+  - text: You can use a generator several times
+  - text: Generators behave like iterators
+  - text: Generator functions and generator expressions are the ways to create generators
+  - text: Generators return all values at once
+  - text: Generators are memory-efficient
+  - text: Generators require memory only for the one value they yield
+files:
+  - name: main.py
+    visible: true
+    text: |+
+      #  You can experiment here, it won’t be checked
+    
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23427#comment
+status: Solved
+record: -1
+local_check: false

@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: false
+options:
+  - text: They are very slow.
+  - text: "They postpone computation and produce values one by one, only when explicitly\
+    \ asked to do so."
+  - text: "They can be defined in a very lazy way, just with a single line of code."
+  - text: They are not the best way to write code and are used only by lazy pogrammers.
+files:
+  - name: main.py
+    visible: true
+    text: |+
+      #  You can experiment here, it won’t be checked
+    
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/8270#comment
+status: Solved
+record: -1
+local_check: false
