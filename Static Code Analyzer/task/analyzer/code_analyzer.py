@@ -56,6 +56,17 @@ def check_for_over_79_characters_error(path):
                 print(err)
 
 
+def check_for_indentation_not_multiple_of_4_error(path):
+    with open(path, "r") as file:
+        for n, line in enumerate(file, 1):
+            try:
+                indentation = len(line) - len(line.lstrip(" "))
+                if indentation % 4 != 0:
+                    raise IndentationNotMultipleOf4Error(n)
+            except IndentationNotMultipleOf4Error as err:
+                print(err)
+
+
 def main():
     path = input()  # No input prompt allowed lol
     check_for_over_79_characters_error(path)
