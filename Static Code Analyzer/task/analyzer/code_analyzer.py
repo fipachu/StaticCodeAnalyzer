@@ -69,6 +69,17 @@ def unnecessary_semicolon(line, line_number):
         )
 
 
+def less_than_2_spaces(line, line_number):
+    if "#" in line:
+        statement = line.split("#")[0]
+        if statement and len(statement) - len(statement.rstrip(" ")) < 2:
+            print(
+                error_message(
+                    line_number, "S004", "Less than two spaces before inline comment"
+                )
+            )
+
+
 def main():
     path = input()  # No input prompt allowed lol
     with open(path, "r") as file:
@@ -76,6 +87,7 @@ def main():
             line_over_79_characters(line, n)
             indentation_not_multiple_of_4(line, n)
             unnecessary_semicolon(line, n)
+            less_than_2_spaces(line, n)
 
 
 if __name__ == main():
