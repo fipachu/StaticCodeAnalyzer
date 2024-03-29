@@ -59,12 +59,23 @@ def indentation_not_multiple_of_4(line, line_number):
         )
 
 
+def unnecessary_semicolon(line, line_number):
+    statement = line.split("#")[0].rstrip()
+    if statement and statement[-1] == ";":
+        print(
+            error_message(
+                line_number, "S003", "Unnecessary semicolon after a statement"
+            )
+        )
+
+
 def main():
     path = input()  # No input prompt allowed lol
     with open(path, "r") as file:
         for n, line in enumerate(file, 1):
             line_over_79_characters(line, n)
             indentation_not_multiple_of_4(line, n)
+            unnecessary_semicolon(line, n)
 
 
 if __name__ == main():
