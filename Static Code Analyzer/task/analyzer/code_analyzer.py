@@ -4,6 +4,12 @@ class Over79CharactersError(Exception):
         super().__init__(self.message)
 
 
+class IndentationNotMultipleOf4(Exception):
+    def __init__(self, line_num):
+        self.message = f"Line {line_num}: S002 Indentation is not a multiple of four"
+        super().__init__(self.message)
+
+
 def check_for_over_79_characters_error(path):
     with open(path, "r") as file:
         for n, line in enumerate(file, 1):
