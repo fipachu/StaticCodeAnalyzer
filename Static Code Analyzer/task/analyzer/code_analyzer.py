@@ -87,15 +87,34 @@ def todo_found(line, line_number):
             print(error_message(line_number, "S005", "TODO found"))
 
 
+def more_than_two_blank_lines(line, line_number, blank_count):
+    line = line.rstrip()
+    if len(line) == 0:
+        blank_count += 1
+    else:
+        if blank_count > 2:
+            print(
+                error_message(
+                    line_number,
+                    "S006",
+                    "More than two blank lines preceding a code line",
+                )
+            )
+        blank_count = 0
+    return blank_count
+
+
 def main():
     path = input()  # No input prompt allowed lol
     with open(path, "r") as file:
+        blank_count = 0
         for n, line in enumerate(file, 1):
             line_over_79_characters(line, n)
             indentation_not_multiple_of_4(line, n)
             unnecessary_semicolon(line, n)
             less_than_2_spaces(line, n)
             todo_found(line, n)
+            blank_count = more_than_two_blank_lines(line, n, blank_count)
 
 
 if __name__ == main():
