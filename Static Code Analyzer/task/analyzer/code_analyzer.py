@@ -4,8 +4,7 @@ class Over79CharactersError(Exception):
         super().__init__(self.message)
 
 
-def main():
-    path = input()  # No input prompt allowed lol
+def check_for_over_79_characters_error(path):
     with open(path, "r") as file:
         for n, line in enumerate(file, 1):
             try:
@@ -13,6 +12,11 @@ def main():
                     raise Over79CharactersError(n)
             except Over79CharactersError as err:
                 print(err)
+
+
+def main():
+    path = input()  # No input prompt allowed lol
+    check_for_over_79_characters_error(path)
 
 
 if __name__ == main():
