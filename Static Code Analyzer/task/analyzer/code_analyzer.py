@@ -8,7 +8,7 @@ class Over79CharactersError(Exception):
         super().__init__(self.message)
 
 
-class IndentationNotMultipleOf4(Exception):
+class IndentationNotMultipleOf4Error(Exception):
     def __init__(self, line_num):
         self.message = error_message(
             line_num, "S002", "Indentation is not a multiple of four"
