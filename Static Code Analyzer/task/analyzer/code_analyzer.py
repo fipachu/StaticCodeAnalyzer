@@ -46,30 +46,25 @@ class MoreThanTwoBlankLinesError(Exception):
         super().__init__(self.message)
 
 
-def check_for_over_79_characters_error(path):
-    with open(path, "r") as file:
-        for n, line in enumerate(file, 1):
-            try:
-                if len(line.rstrip()) > 79:
-                    raise Over79CharactersError(n)
-            except Over79CharactersError as err:
-                print(err)
+def line_over_79_characters(line, line_number):
+    if len(line.rstrip()) > 79:
+        print(error_message(line_number, "S001", "Line length over 79 characters"))
 
 
-def check_for_indentation_not_multiple_of_4_error(path):
-    with open(path, "r") as file:
-        for n, line in enumerate(file, 1):
-            try:
-                indentation = len(line) - len(line.lstrip(" "))
-                if indentation % 4 != 0:
-                    raise IndentationNotMultipleOf4Error(n)
-            except IndentationNotMultipleOf4Error as err:
-                print(err)
+def indentation_not_multiple_of_4(line, line_number):
+    indentation = len(line) - len(line.lstrip(" "))
+    if indentation % 4 != 0:
+        print(
+            error_message(line_number, "S002", "Indentation is not a multiple of four")
+        )
 
 
 def main():
     path = input()  # No input prompt allowed lol
-    check_for_over_79_characters_error(path)
+    with open(path, "r") as file:
+        for n, line in enumerate(file, 1):
+            line_over_79_characters(line, n)
+            indentation_not_multiple_of_4(line, n)
 
 
 if __name__ == main():
