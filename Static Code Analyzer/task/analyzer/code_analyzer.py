@@ -80,6 +80,13 @@ def less_than_2_spaces(line, line_number):
             )
 
 
+def todo_found(line, line_number):
+    if "#" in line:
+        comment = line.split("#")[1]
+        if "todo" in comment.lower():
+            print(error_message(line_number, "S005", "TODO found"))
+
+
 def main():
     path = input()  # No input prompt allowed lol
     with open(path, "r") as file:
@@ -88,6 +95,7 @@ def main():
             indentation_not_multiple_of_4(line, n)
             unnecessary_semicolon(line, n)
             less_than_2_spaces(line, n)
+            todo_found(line, n)
 
 
 if __name__ == main():
