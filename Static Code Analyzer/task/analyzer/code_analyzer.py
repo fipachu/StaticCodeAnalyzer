@@ -74,5 +74,5 @@ def main():
             blank_count = more_than_two_blank_lines(line, n, blank_count)
 
 
-if __name__ == main():
+if __name__ == "__main__":
     main()
