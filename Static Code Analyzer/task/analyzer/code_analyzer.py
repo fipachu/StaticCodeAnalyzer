@@ -9,48 +9,53 @@ def error_message(line_num, error_code, description, path: "path to a .py file" 
     ]
     return "".join(message)
 
-def line_over_79_characters(line, line_number):
+
+def line_over_79_characters(line, line_number, path=None):
     if len(line) > 79:
-        print(error_message(line_number, "S001", "Line length over 79 characters"))
-
-
-def indentation_not_multiple_of_4(line, line_number):
-    indentation = len(line) - len(line.lstrip(" "))
-    if indentation % 4 != 0:
-        print(
-            error_message(line_number, "S002", "Indentation is not a multiple of four")
-        )
-
-
-def unnecessary_semicolon(line, line_number):
-    statement = line.split("#")[0].rstrip()
-    if statement and statement[-1] == ";":
         print(
             error_message(
-                line_number, "S003", "Unnecessary semicolon after a statement"
+                line_number, "S001", "Line length over 79 characters", path=path
             )
         )
 
 
-def less_than_2_spaces(line, line_number):
+def indentation_not_multiple_of_4(line, line_number, path=None):
+    indentation = len(line) - len(line.lstrip(" "))
+    if indentation % 4 != 0:
+        print(
+            error_message(line_number, "S002", "Indentation is not a multiple of four", path=path)
+        )
+
+
+def unnecessary_semicolon(line, line_number, path=None):
+    statement = line.split("#")[0].rstrip()
+    if statement and statement[-1] == ";":
+        print(
+            error_message(
+                line_number, "S003", "Unnecessary semicolon after a statement", path=path
+            )
+        )
+
+
+def less_than_2_spaces(line, line_number, path=None):
     if "#" in line:
         statement = line.split("#")[0]
         if statement and len(statement) - len(statement.rstrip(" ")) < 2:
             print(
                 error_message(
-                    line_number, "S004", "Less than two spaces before inline comment"
+                    line_number, "S004", "Less than two spaces before inline comment", path=path
                 )
             )
 
 
-def todo_found(line, line_number):
+def todo_found(line, line_number, path=None):
     if "#" in line:
         comment = line.split("#")[1]
         if "todo" in comment.lower():
-            print(error_message(line_number, "S005", "TODO found"))
+            print(error_message(line_number, "S005", "TODO found", path=path))
 
 
-def more_than_two_blank_lines(line, line_number, blank_count):
+def more_than_two_blank_lines(line, line_number, blank_count, path=None):
     if len(line) == 0:
         blank_count += 1
     else:
@@ -59,7 +64,7 @@ def more_than_two_blank_lines(line, line_number, blank_count):
                 error_message(
                     line_number,
                     "S006",
-                    "More than two blank lines preceding a code line",
+                    "More than two blank lines preceding a code line", path=path
                 )
             )
         blank_count = 0
