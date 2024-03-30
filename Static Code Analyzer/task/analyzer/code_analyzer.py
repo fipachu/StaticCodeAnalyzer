@@ -79,23 +79,38 @@ def more_than_two_blank_lines(line, line_number, blank_count, path):
     return blank_count
 
 
-def main():
-    path = input()  # No input prompt allowed lol
+def analyze_directory(file_or_dir):
+    for root, _, files in os.walk(file_or_dir):
+        for name in files:
+            path = os.path.join(root, name)
+
+            analyze_file(path)
+
+
+def analyze_file(path):
     with open(path, "r") as file:
         blank_count = 0
         for n, line in enumerate(file, 1):
             line = line.rstrip()
+
+            line_over_79_characters(line, n, path=path)
+            indentation_not_multiple_of_4(line, n, path=path)
+            unnecessary_semicolon(line, n, path=path)
+            less_than_2_spaces(line, n, path=path)
+            todo_found(line, n, path=path)
+            blank_count = more_than_two_blank_lines(line, n, blank_count, path=path)
+
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("path", help="a valid path to a file or directory")
     file_or_dir = parser.parse_args().path
     # file_or_dir = input()  # No input prompt allowed lol
 
-            line_over_79_characters(line, n)
-            indentation_not_multiple_of_4(line, n)
-            unnecessary_semicolon(line, n)
-            less_than_2_spaces(line, n)
-            todo_found(line, n)
-            blank_count = more_than_two_blank_lines(line, n, blank_count)
+    if os.path.isdir(file_or_dir):
+        analyze_directory(file_or_dir)
+    elif os.path.isfile(file_or_dir):
+        analyze_file(file_or_dir)
 
 
 if __name__ == "__main__":
