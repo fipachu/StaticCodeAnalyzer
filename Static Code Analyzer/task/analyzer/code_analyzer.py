@@ -1,5 +1,6 @@
-def error_message(line_num, error_code, description):
-    return f"Line {line_num}: {error_code} {description}"
+import argparse
+import os
+
 
 
 def line_over_79_characters(line, line_number):
@@ -65,6 +66,10 @@ def main():
         blank_count = 0
         for n, line in enumerate(file, 1):
             line = line.rstrip()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", help="a valid path to a file or directory")
+    file_or_dir = parser.parse_args().path
+    # file_or_dir = input()  # No input prompt allowed lol
 
             line_over_79_characters(line, n)
             indentation_not_multiple_of_4(line, n)
