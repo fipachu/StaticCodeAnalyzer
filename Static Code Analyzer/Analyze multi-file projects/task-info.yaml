@@ -428,6 +428,6 @@ files:
 feedback_link: https://hyperskill.org/learn/step/9905#comment
 status: Failed
 feedback:
-  message: "Exception in test #1"
-  time: "Fri, 29 Mar 2024 18:40:11 UTC"
+  message: "Wrong answer in test #1"
+  time: "Sat, 30 Mar 2024 19:22:14 UTC"
 record: 3

@@ -5,15 +5,11 @@ import os
 # arguments"""
 
 
-def error_message(line_num, error_code, description, path: "path to a .py file" = None):
-    message = [
-        f"{path}: " if path is not None else "",
-        f"Line {line_num}: {error_code} {description}",
-    ]
-    return "".join(message)
+def error_message(line_num, error_code, description, path: "path to a .py file"):
+    return f"{path}: Line {line_num}: {error_code} {description}"
 
 
-def line_over_79_characters(line, line_number, path=None):
+def line_over_79_characters(line, line_number, path):
     if len(line) > 79:
         print(
             error_message(
@@ -22,7 +18,7 @@ def line_over_79_characters(line, line_number, path=None):
         )
 
 
-def indentation_not_multiple_of_4(line, line_number, path=None):
+def indentation_not_multiple_of_4(line, line_number, path):
     indentation = len(line) - len(line.lstrip(" "))
     if indentation % 4 != 0:
         print(
@@ -32,7 +28,7 @@ def indentation_not_multiple_of_4(line, line_number, path=None):
         )
 
 
-def unnecessary_semicolon(line, line_number, path=None):
+def unnecessary_semicolon(line, line_number, path):
     statement = line.split("#")[0].rstrip()
     if statement and statement[-1] == ";":
         print(
@@ -45,7 +41,7 @@ def unnecessary_semicolon(line, line_number, path=None):
         )
 
 
-def less_than_2_spaces(line, line_number, path=None):
+def less_than_2_spaces(line, line_number, path):
     if "#" in line:
         statement = line.split("#")[0]
         if statement and len(statement) - len(statement.rstrip(" ")) < 2:
@@ -59,14 +55,14 @@ def less_than_2_spaces(line, line_number, path=None):
             )
 
 
-def todo_found(line, line_number, path=None):
+def todo_found(line, line_number, path):
     if "#" in line:
         comment = line.split("#")[1]
         if "todo" in comment.lower():
             print(error_message(line_number, "S005", "TODO found", path=path))
 
 
-def more_than_two_blank_lines(line, line_number, blank_count, path=None):
+def more_than_two_blank_lines(line, line_number, blank_count, path):
     if len(line) == 0:
         blank_count += 1
     else:
