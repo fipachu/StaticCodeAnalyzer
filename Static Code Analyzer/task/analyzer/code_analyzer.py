@@ -26,7 +26,9 @@ def indentation_not_multiple_of_4(line, line_number, path=None):
     indentation = len(line) - len(line.lstrip(" "))
     if indentation % 4 != 0:
         print(
-            error_message(line_number, "S002", "Indentation is not a multiple of four", path=path)
+            error_message(
+                line_number, "S002", "Indentation is not a multiple of four", path=path
+            )
         )
 
 
@@ -35,7 +37,10 @@ def unnecessary_semicolon(line, line_number, path=None):
     if statement and statement[-1] == ";":
         print(
             error_message(
-                line_number, "S003", "Unnecessary semicolon after a statement", path=path
+                line_number,
+                "S003",
+                "Unnecessary semicolon after a statement",
+                path=path,
             )
         )
 
@@ -46,7 +51,10 @@ def less_than_2_spaces(line, line_number, path=None):
         if statement and len(statement) - len(statement.rstrip(" ")) < 2:
             print(
                 error_message(
-                    line_number, "S004", "Less than two spaces before inline comment", path=path
+                    line_number,
+                    "S004",
+                    "Less than two spaces before inline comment",
+                    path=path,
                 )
             )
 
@@ -67,7 +75,8 @@ def more_than_two_blank_lines(line, line_number, blank_count, path=None):
                 error_message(
                     line_number,
                     "S006",
-                    "More than two blank lines preceding a code line", path=path
+                    "More than two blank lines preceding a code line",
+                    path=path,
                 )
             )
         blank_count = 0
