@@ -1,6 +1,9 @@
 import argparse
 import os
 
+"""Exercise: figure out a way to avoid having multiple functions with the same list of
+# arguments"""
+
 
 def error_message(line_num, error_code, description, path: "path to a .py file" = None):
     message = [
