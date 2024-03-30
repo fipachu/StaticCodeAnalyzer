@@ -2,6 +2,12 @@ import argparse
 import os
 
 
+def error_message(line_num, error_code, description, path: "path to a .py file" = None):
+    message = [
+        f"{path}: " if path is not None else "",
+        f"Line {line_num}: {error_code} {description}",
+    ]
+    return "".join(message)
 
 def line_over_79_characters(line, line_number):
     if len(line) > 79:
