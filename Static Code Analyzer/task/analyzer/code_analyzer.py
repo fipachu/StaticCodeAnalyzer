@@ -88,6 +88,7 @@ def construction_checks(line, line_number, path):
         too_many_spaces_after_construction_name(
             line_number, path, construction_name, spaces
         )
+        class_name_not_in_camel_case(line_number, path, object_name)
 
 
 def too_many_spaces_after_construction_name(
@@ -99,6 +100,18 @@ def too_many_spaces_after_construction_name(
                 line_number,
                 "S007",
                 f"Too many spaces after '{construction_name}'",
+                path=path,
+            )
+        )
+
+
+def class_name_not_in_camel_case(line_number, path, class_name):
+    if re.match("[a-z0-9_]+", class_name):
+        print(
+            error_message(
+                line_number,
+                "S008",
+                f"Class name '{class_name}' should be written in CamelCase",
                 path=path,
             )
         )
@@ -124,6 +137,7 @@ def analyze_file(path):
             less_than_2_spaces(line, n, path=path)
             todo_found(line, n, path=path)
             blank_count = more_than_two_blank_lines(line, n, blank_count, path=path)
+            construction_checks(line, n, path=path)
 
 
 def main():
