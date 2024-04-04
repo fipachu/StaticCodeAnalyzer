@@ -81,14 +81,30 @@ def more_than_two_blank_lines(line, line_number, blank_count, path):
 
 
 def construction_checks(line, line_number, path):
-    match = re.search("(def|class)( +)(.+):", line)
+    # noinspection RegExpRepeatedSpace
+    match = re.search(
+        r"""(def|class)  # Construction name
+        (\ +)  # Spaces
+        (\w+)  # Class name
+        # Optional parent class:
+        (?:
+            \(
+            (\w+)  # Parent class name
+            \)
+        )?
+        (?:\(\))?  # Optional parens for functions
+        :  # Match definitions ending in semicolon only""",
+        line,
+        re.VERBOSE,
+    )
     if match:
-        construction_name, spaces, object_name = match.groups()
+        construction_name, spaces, object_name, parent = match.groups()
 
         too_many_spaces_after_construction_name(
             line_number, path, construction_name, spaces
         )
         if construction_name == "class":
+            # Not checking the parent. Let's say it should be reported at definition.
             class_name_not_in_camel_case(line_number, path, object_name)
         elif construction_name == "def":
             function_name_not_in_snake_case(line_number, path, object_name)
