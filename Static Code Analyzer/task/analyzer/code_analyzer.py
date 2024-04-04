@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 
 """Exercise: figure out a way to avoid having multiple functions with the same list of
 arguments"""
@@ -77,6 +78,19 @@ def more_than_two_blank_lines(line, line_number, blank_count, path):
             )
         blank_count = 0
     return blank_count
+
+
+def too_many_spaces_after_construction_name(line, line_number, path):
+    if match := re.search("(def|class) {2}", line):
+        construction_name = match.group(1)
+        print(
+            error_message(
+                line_number,
+                "S007",
+                f"Too many spaces after '{construction_name}'",
+                path=path,
+            )
+        )
 
 
 def analyze_directory(file_or_dir):
