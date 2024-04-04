@@ -89,6 +89,7 @@ def construction_checks(line, line_number, path):
             line_number, path, construction_name, spaces
         )
         class_name_not_in_camel_case(line_number, path, object_name)
+        function_name_not_in_snake_case(line_number, path, object_name)
 
 
 def too_many_spaces_after_construction_name(
@@ -112,6 +113,18 @@ def class_name_not_in_camel_case(line_number, path, class_name):
                 line_number,
                 "S008",
                 f"Class name '{class_name}' should be written in CamelCase",
+                path=path,
+            )
+        )
+
+
+def function_name_not_in_snake_case(line_number, path, function_name):
+    if re.match("[A-Z]+", function_name):
+        print(
+            error_message(
+                line_number,
+                "S009",
+                f"Function name '{function_name}' should be written in snake_case",
                 path=path,
             )
         )
