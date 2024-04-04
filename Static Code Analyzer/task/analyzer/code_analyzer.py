@@ -88,8 +88,10 @@ def construction_checks(line, line_number, path):
         too_many_spaces_after_construction_name(
             line_number, path, construction_name, spaces
         )
-        class_name_not_in_camel_case(line_number, path, object_name)
-        function_name_not_in_snake_case(line_number, path, object_name)
+        if construction_name == "class":
+            class_name_not_in_camel_case(line_number, path, object_name)
+        elif construction_name == "def":
+            function_name_not_in_snake_case(line_number, path, object_name)
 
 
 def too_many_spaces_after_construction_name(
