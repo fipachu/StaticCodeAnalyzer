@@ -80,9 +80,20 @@ def more_than_two_blank_lines(line, line_number, blank_count, path):
     return blank_count
 
 
-def too_many_spaces_after_construction_name(line, line_number, path):
-    if match := re.search("(def|class) {2}", line):
-        construction_name = match.group(1)
+def construction_checks(line, line_number, path):
+    match = re.search("(def|class)( +)(.+):", line)
+    if match:
+        construction_name, spaces, object_name = match.groups()
+
+        too_many_spaces_after_construction_name(
+            line_number, path, construction_name, spaces
+        )
+
+
+def too_many_spaces_after_construction_name(
+    line_number, path, construction_name, spaces
+):
+    if len(spaces) > 1:
         print(
             error_message(
                 line_number,
