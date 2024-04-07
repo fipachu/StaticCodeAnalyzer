@@ -1,9 +1,30 @@
 import argparse
+import ast
 import os
 import re
 
 """Exercise: figure out a way to avoid having multiple functions with the same list of
 arguments"""
+
+MUTABLE_LITERAL_NODES = (ast.List, ast.Dict, ast.Set)
+
+
+class MutableArgumentVisitor(ast.NodeVisitor):
+    def __init__(self):
+        self.mutable_argument_name = None
+        self.mutable_argument_value = None
+        self.found_mutable_argument = False
+
+    def visit_FunctionDef(self, node):
+        if not self.found_mutable_argument:
+            for arg_name, arg_value in zip(node.args.args, node.args.defaults):
+                # Check if the default value is a mutable literal type
+                if isinstance(arg_value, MUTABLE_LITERAL_NODES):
+                    self.mutable_argument_name = arg_name.arg
+                    self.mutable_argument_value = arg_value
+                    self.found_mutable_argument = True
+                    break
+        self.generic_visit(node)
 
 
 def error_message(line_num, error_code, description, path: "path to a .py file"):
