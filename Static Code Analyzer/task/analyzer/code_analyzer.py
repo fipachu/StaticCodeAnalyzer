@@ -10,20 +10,29 @@ MUTABLE_LITERAL_NODES = (ast.List, ast.Dict, ast.Set)
 
 
 class MutableArgumentVisitor(ast.NodeVisitor):
-    def __init__(self):
-        self.mutable_arguments = []
+    def __init__(self, path: str):
+        self._error_messages = []
+        self._path = path
 
     def visit_FunctionDef(self, node):
         for arg_name, arg_value in zip(node.args.args, node.args.defaults):
             # Check if the default value is a mutable literal type
             if isinstance(arg_value, MUTABLE_LITERAL_NODES):
-                self.mutable_arguments.append({
-                    'argument_name': arg_name.arg,
-                    'argument_value': arg_value,
-                    'line_number': node.lineno
-                })
+                # The type checker appears to be wrong about arg_vlue usage
+                # noinspection PyTypeChecker
+                error_msg = error_message(
+                    node.lineno,
+                    "S012",
+                    f"The default argument '{arg_name.arg}' "
+                    f"value {ast.literal_eval(arg_value)} is mutable",
+                    self._path,
+                )
+                self._error_messages.append(error_msg)
                 break
         self.generic_visit(node)
+
+    def get_error_messages(self) -> list[str]:
+        return self._error_messages
 
 
 def error_message(line_num, error_code, description, path: "path to a .py file"):
@@ -170,6 +179,9 @@ def function_name_not_in_snake_case(line_number, path, function_name):
                 path=path,
             )
         )
+def syntax_tree_checks(tree, path) -> list[str]:
+    default_arg_errors = mutable_arguments(tree, path)
+    return default_arg_errors
 
 
 def argument_name_not_in_snake_case(line_number, path, argument_name):
@@ -196,8 +208,19 @@ def variable_name_not_in_snake_case(line_number, path, variable_name):
         )
 
 
-def analyze_directory(file_or_dir):
-    for root, _, files in os.walk(file_or_dir):
+def mutable_arguments(source_code, path):
+    # Parse the source code into an AST
+    tree = ast.parse(source_code)
+
+    # Create an instance of the visitor
+    visitor = MutableArgumentVisitor(path)
+
+    # Traverse the AST
+    visitor.visit(tree)
+
+    return visitor.get_error_messages()
+
+
 def analyze_directory(directory):
     for root, _, files in os.walk(directory):
         for name in files:
@@ -208,6 +231,12 @@ def analyze_directory(directory):
 
 def analyze_file(path):
     with open(path, "r") as file:
+        tree = ast.parse(file.read())
+        # IMPORTANT - reset the read pointer:
+        file.seek(0)
+        errors_from_ast: list[str] = syntax_tree_checks(tree, path)
+        print(errors_from_ast)
+
         blank_count = 0
         for n, line in enumerate(file, 1):
             line = line.rstrip()
