@@ -113,7 +113,7 @@ def construction_checks(line, line_number, path):
             (\w+)  # Parent class name
             \)
         )?
-        (?:\(\))?  # Optional parens for functions
+        (?:\(.*\))?  # Optional arg list for functions
         :  # Match definitions ending in semicolon only""",
         line,
         re.VERBOSE,

@@ -336,6 +336,12 @@ files:
       
       if __name__ == '__main__':    AnalyzerTest("analyzer.code_analyzer").run_tests()
     learner_created: false
+  - name: analyzer/test_source.py
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9907#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: "Wrong answer in test #3"
+  time: "Sun, 07 Apr 2024 11:16:03 UTC"
 record: -1
