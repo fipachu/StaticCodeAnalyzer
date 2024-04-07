@@ -152,6 +152,18 @@ def function_name_not_in_snake_case(line_number, path, function_name):
         )
 
 
+def argument_name_not_in_snake_case(line_number, path, argument_name):
+    if not is_snake_case(argument_name):
+        print(
+            error_message(
+                line_number,
+                "S010",
+                f"Argument name '{argument_name}' should be written in snake_case",
+                path=path,
+            )
+        )
+
+
 def analyze_directory(file_or_dir):
     for root, _, files in os.walk(file_or_dir):
         for name in files:

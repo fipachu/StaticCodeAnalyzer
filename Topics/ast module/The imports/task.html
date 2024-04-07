@@ -1,0 +1,19 @@
+<h2>The imports</h2>
+<div class="step-text">
+<p></p>
+<p>There is a predefined variable <code class="language-python">code</code> that contains the source code. Write a program that will traverse the tree and print the name of each <code class="language-python">Import</code>. Each name should be on a new line.</p>
+<p>For example, if the code in the <code class="language-python">code</code> variable looked like this:</p>
+<pre><code class="language-python">import random
+import time
+
+print("Welcome to the Random Number Generator!")
+
+for _ in range(10):
+    random_number = random.randint(1, 10)
+    print(f"Random number is: {random_number}")
+    time.sleep(2)</code></pre>
+<p>the result of the program should be as follows:</p>
+<pre><code class="language-no-highlight">random
+time</code></pre>
+<p><strong>Tip:</strong> You can solve the problem however it is most convenient to you but, in case you're going to use <code class="language-python">ast.NodeVisitor</code> class, keep in mind that <code class="language-python">Import</code> node class has <code class="language-python">names</code> attribute which is a list of <code class="language-python">alias</code> nodes. To access their actual names, just refer to their <code class="language-python">name</code> attribute.</p><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 15 seconds</font><br><br>
+</div>
