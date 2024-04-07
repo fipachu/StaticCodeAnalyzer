@@ -136,8 +136,12 @@ def class_name_not_in_camel_case(line_number, path, class_name):
         )
 
 
+def is_snake_case(name) -> bool:
+    return not re.match("[A-Z]+", name)
+
+
 def function_name_not_in_snake_case(line_number, path, function_name):
-    if re.match("[A-Z]+", function_name):
+    if not is_snake_case(function_name):
         print(
             error_message(
                 line_number,
