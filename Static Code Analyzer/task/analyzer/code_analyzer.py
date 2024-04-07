@@ -164,6 +164,18 @@ def argument_name_not_in_snake_case(line_number, path, argument_name):
         )
 
 
+def variable_name_not_in_snake_case(line_number, path, variable_name):
+    if not is_snake_case(variable_name):
+        print(
+            error_message(
+                line_number,
+                "S011",
+                f"Variable name '{variable_name}' should be written in snake_case",
+                path=path,
+            )
+        )
+
+
 def analyze_directory(file_or_dir):
     for root, _, files in os.walk(file_or_dir):
         for name in files:
