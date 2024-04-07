@@ -199,6 +199,8 @@ def variable_name_not_in_snake_case(line_number, path, variable_name):
 
 def analyze_directory(file_or_dir):
     for root, _, files in os.walk(file_or_dir):
+def analyze_directory(directory):
+    for root, _, files in os.walk(directory):
         for name in files:
             path = os.path.join(root, name)
 
