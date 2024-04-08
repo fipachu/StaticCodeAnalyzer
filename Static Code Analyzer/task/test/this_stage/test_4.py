@@ -1,9 +1,9 @@
 class Test:
-    def __init__(self, alpha, Beta=1):
-        self.alpha = alpha
+    def __init__(Self, Alpha, Beta=1):
+        Self.alpha = Alpha
 
-    def function(self):
-        print(self.alpha)
+    def function(Self):
+        print(Self.alpha)
 
     def okey(self, s=None):
         print("okey")

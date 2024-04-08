@@ -51,6 +51,18 @@ class MutableArgumentVisitor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def visit_Assign(self, node):
+        for target in node.targets:
+            if isinstance(target, ast.Name) and not is_snake_case(target.id):
+                error_msg = error_message(
+                    node.lineno,
+                    "S011",
+                    f"Variable '{target.id}' should be written in snake_case",
+                    self._path,
+                )
+                self._error_messages.append((node.lineno, error_msg))
+        self.generic_visit(node)
+
     def get_error_messages(self) -> list[tuple[int, str]]:
         return self._error_messages
 
