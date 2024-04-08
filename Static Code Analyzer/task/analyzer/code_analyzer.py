@@ -16,8 +16,24 @@ class MutableArgumentVisitor(ast.NodeVisitor):
 
     def visit_FunctionDef(self, node):
         for arg_name, arg_value in zip(node.args.args, node.args.defaults):
+            fund_bad_arg_name = False
+            found_mutable_argument = False
+
+            if not is_snake_case(arg_name.arg) and not fund_bad_arg_name:
+                error_msg = error_message(
+                    node.lineno,
+                    "S010",
+                    f"Argument name '{arg_name.arg}' should be written in snake_case",
+                    self._path,
+                )
+                self._error_messages.append((node.lineno, error_msg))
+                fund_bad_arg_name = True
+
             # Check if the default value is a mutable literal type
-            if isinstance(arg_value, MUTABLE_LITERAL_NODES):
+            if (
+                isinstance(arg_value, MUTABLE_LITERAL_NODES)
+                and not found_mutable_argument
+            ):
                 # The type checker appears to be wrong about arg_vlue usage
                 # noinspection PyTypeChecker
                 error_msg = error_message(
@@ -28,7 +44,11 @@ class MutableArgumentVisitor(ast.NodeVisitor):
                     self._path,
                 )
                 self._error_messages.append((node.lineno, error_msg))
+                found_mutable_argument = True
+
+            if found_mutable_argument and fund_bad_arg_name:
                 break
+
         self.generic_visit(node)
 
     def get_error_messages(self) -> list[tuple[int, str]]:
