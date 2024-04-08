@@ -25,15 +25,15 @@ class MutableArgumentVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def _check_mutable_arguments(self, node):
-        for arg_name, arg_value in zip(node.args.args, node.args.defaults):
+        for arg, arg_value in zip(node.args.args, node.args.defaults):
             fund_bad_arg_name = False
             found_mutable_argument = False
 
-            if not is_snake_case(arg_name.arg) and not fund_bad_arg_name:
+            if not is_snake_case(arg.arg) and not fund_bad_arg_name:
                 error_msg = error_message(
                     node.lineno,
                     "S010",
-                    f"Argument name '{arg_name.arg}' should be written in snake_case",
+                    f"Argument name '{arg.arg}' should be written in snake_case",
                     self._path,
                 )
                 self._error_messages.append((node.lineno, error_msg))
@@ -49,7 +49,7 @@ class MutableArgumentVisitor(ast.NodeVisitor):
                 error_msg = error_message(
                     node.lineno,
                     "S012",
-                    f"The default argument '{arg_name.arg}' "
+                    f"The default argument '{arg.arg}' "
                     f"value {ast.literal_eval(arg_value)} is mutable",
                     self._path,
                 )
