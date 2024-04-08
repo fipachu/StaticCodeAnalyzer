@@ -11,7 +11,7 @@ MUTABLE_LITERAL_NODES = (ast.List, ast.Dict, ast.Set)
 
 class MutableArgumentVisitor(ast.NodeVisitor):
     def __init__(self, path: str):
-        self._error_messages = []
+        self._error_messages: list[tuple[int, str]] = []
         self._path = path
 
     def visit_FunctionDef(self, node):
@@ -27,11 +27,11 @@ class MutableArgumentVisitor(ast.NodeVisitor):
                     f"value {ast.literal_eval(arg_value)} is mutable",
                     self._path,
                 )
-                self._error_messages.append(error_msg)
+                self._error_messages.append((node.lineno, error_msg))
                 break
         self.generic_visit(node)
 
-    def get_error_messages(self) -> list[str]:
+    def get_error_messages(self) -> list[tuple[int, str]]:
         return self._error_messages
 
 
@@ -179,12 +179,18 @@ def function_name_not_in_snake_case(line_number, path, function_name):
                 path=path,
             )
         )
-def syntax_tree_checks(tree, path) -> list[str]:
+
+
+def syntax_tree_checks(tree, path) -> list[tuple[int, str]]:
+    # TODO: finnish me!
+    # arg_name_errors = argument_name_not_in_snake_case(tree)
+    # var_name_errors = variable_name_not_in_snake_case(tree)
     default_arg_errors = mutable_arguments(tree, path)
     return default_arg_errors
 
 
 def argument_name_not_in_snake_case(line_number, path, argument_name):
+    # TODO: rewrite
     if not is_snake_case(argument_name):
         print(
             error_message(
@@ -197,6 +203,7 @@ def argument_name_not_in_snake_case(line_number, path, argument_name):
 
 
 def variable_name_not_in_snake_case(line_number, path, variable_name):
+    # TODO: rewrite
     if not is_snake_case(variable_name):
         print(
             error_message(
@@ -208,7 +215,7 @@ def variable_name_not_in_snake_case(line_number, path, variable_name):
         )
 
 
-def mutable_arguments(source_code, path):
+def mutable_arguments(source_code, path) -> list[tuple[int, str]]:
     # Parse the source code into an AST
     tree = ast.parse(source_code)
 
@@ -234,8 +241,14 @@ def analyze_file(path):
         tree = ast.parse(file.read())
         # IMPORTANT - reset the read pointer:
         file.seek(0)
-        errors_from_ast: list[str] = syntax_tree_checks(tree, path)
-        print(errors_from_ast)
+        errors_from_ast = {}
+        for line_num, error in syntax_tree_checks(tree, path):
+            if line_num not in errors_from_ast:
+                errors_from_ast[line_num] = [error]
+            else:
+                errors_from_ast[line_num].append(error)
+        # print(errors_from_ast)
+        # TODO: integrate errors from ast with the rest of errors
 
         blank_count = 0
         for n, line in enumerate(file, 1):
@@ -248,6 +261,9 @@ def analyze_file(path):
             todo_found(line, n, path=path)
             blank_count = more_than_two_blank_lines(line, n, blank_count, path=path)
             construction_checks(line, n, path=path)
+            if n in errors_from_ast:
+                for error in errors_from_ast[n]:
+                    print(error)
 
 
 def main():
