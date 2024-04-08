@@ -233,37 +233,8 @@ def function_name_not_in_snake_case(line_number, path, function_name):
 
 
 def syntax_tree_checks(tree, path) -> list[tuple[int, str]]:
-    # TODO: finnish me!
-    # arg_name_errors = argument_name_not_in_snake_case(tree)
-    # var_name_errors = variable_name_not_in_snake_case(tree)
     default_arg_errors = mutable_arguments(tree, path)
     return default_arg_errors
-
-
-def argument_name_not_in_snake_case(line_number, path, argument_name):
-    # TODO: rewrite
-    if not is_snake_case(argument_name):
-        print(
-            error_message(
-                line_number,
-                "S010",
-                f"Argument name '{argument_name}' should be written in snake_case",
-                path=path,
-            )
-        )
-
-
-def variable_name_not_in_snake_case(line_number, path, variable_name):
-    # TODO: rewrite
-    if not is_snake_case(variable_name):
-        print(
-            error_message(
-                line_number,
-                "S011",
-                f"Variable name '{variable_name}' should be written in snake_case",
-                path=path,
-            )
-        )
 
 
 def mutable_arguments(source_code, path) -> list[tuple[int, str]]:
@@ -299,7 +270,6 @@ def analyze_file(path):
             elif error not in errors_from_ast[line_num]:
                 errors_from_ast[line_num].append(error)
         # print(errors_from_ast)
-        # TODO: integrate errors from ast with the rest of errors
 
         blank_count = 0
         for n, line in enumerate(file, 1):
