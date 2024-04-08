@@ -15,6 +15,16 @@ class MutableArgumentVisitor(ast.NodeVisitor):
         self._path = path
 
     def visit_FunctionDef(self, node):
+        self._check_mutable_arguments(node)
+        self.generic_visit(node)
+
+    def visit_ClassDef(self, node):
+        for sub_node in node.body:
+            if isinstance(sub_node, ast.FunctionDef):
+                self._check_mutable_arguments(sub_node)
+        self.generic_visit(node)
+
+    def _check_mutable_arguments(self, node):
         for arg_name, arg_value in zip(node.args.args, node.args.defaults):
             fund_bad_arg_name = False
             found_mutable_argument = False
@@ -48,8 +58,6 @@ class MutableArgumentVisitor(ast.NodeVisitor):
 
             if found_mutable_argument and fund_bad_arg_name:
                 break
-
-        self.generic_visit(node)
 
     def visit_Assign(self, node):
         for target in node.targets:
