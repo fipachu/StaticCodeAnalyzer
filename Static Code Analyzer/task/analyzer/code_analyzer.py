@@ -4,7 +4,10 @@ import os
 import re
 
 """Exercise: figure out a way to avoid having multiple functions with the same list of
-arguments"""
+arguments...
+
+...actually scratch that. Figure out a way to make the code not disgusting, because 
+holly cow isn't this an absolute mess. I don't even know where to begin."""
 
 MUTABLE_LITERAL_NODES = (ast.List, ast.Dict, ast.Set)
 
@@ -25,7 +28,7 @@ class MutableArgumentVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def _check_mutable_arguments(self, node):
-        for arg, arg_value in zip(node.args.args, node.args.defaults):
+        for arg in node.args.args:
             fund_bad_arg_name = False
             found_mutable_argument = False
 
@@ -40,6 +43,14 @@ class MutableArgumentVisitor(ast.NodeVisitor):
                 fund_bad_arg_name = True
 
             # Check if the default value is a mutable literal type
+            arg_value = None
+            arg_end = arg.end_col_offset
+            for default in node.args.defaults:
+                # Terrible hack, works only if there are no spaces
+                # around the assignment operator
+                if default.col_offset == arg_end + 1:
+                    arg_value = default
+
             if (
                 isinstance(arg_value, MUTABLE_LITERAL_NODES)
                 and not found_mutable_argument
@@ -285,7 +296,7 @@ def analyze_file(path):
         for line_num, error in syntax_tree_checks(tree, path):
             if line_num not in errors_from_ast:
                 errors_from_ast[line_num] = [error]
-            else:
+            elif error not in errors_from_ast[line_num]:
                 errors_from_ast[line_num].append(error)
         # print(errors_from_ast)
         # TODO: integrate errors from ast with the rest of errors

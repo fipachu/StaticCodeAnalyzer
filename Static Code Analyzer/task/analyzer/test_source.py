@@ -1,8 +1,13 @@
-# LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG
-def Fun(Arg=[]):
-    BadVariable = 666
-    print(BadVariable, Arg)
+class Test:
+    def __init__(self, alpha, beta=1):
+        self.alpha = alpha
+        self.beta = beta
 
+    def function(self):
+        print(self.alpha)
 
-def very_fun(arr=["pirates", "parrots"]):
-    print(arr)
+    def mutable_var(self, s=[]):
+        print(s)
+
+    def okey(self, s=None):
+        print("okey")

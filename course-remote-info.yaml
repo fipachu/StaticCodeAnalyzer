@@ -20,7 +20,7 @@ stages:
     is_completed: true
   - id: 613
     step: 9907
-    is_completed: false
+    is_completed: true
 topics:
   0:
     - title: Operating systems
